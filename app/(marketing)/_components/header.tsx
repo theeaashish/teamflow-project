@@ -1,11 +1,17 @@
 "use client";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { MAIN_LOGO, MAIN_LOGO_META } from "@/public/assets";
+import {
+  RegisterLink,
+  LoginLink,
+  LogoutLink,
+} from "@kinde-oss/kinde-auth-nextjs/components";
+import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
 const menuItems = [
   { name: "Features", href: "#link" },
@@ -17,6 +23,8 @@ const menuItems = [
 export const HeroHeader = () => {
   const [menuState, setMenuState] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
+  const { getUser, isLoading } = useKindeBrowserClient();
+  const user = getUser();
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -52,7 +60,7 @@ export const HeroHeader = () => {
                   alt={MAIN_LOGO_META.LOGO.alt}
                 />
                 <h1 className="text-lg font-semibold">
-                    Tail<span className="text-primary">Flow</span>
+                  Tail<span className="text-primary">Flow</span>
                 </h1>
               </Link>
 
@@ -96,8 +104,38 @@ export const HeroHeader = () => {
                   ))}
                 </ul>
               </div>
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button
+              {isLoading ? null : (
+                <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
+                  {user ? (
+                    <>
+                      <Link
+                        href="/dashboard"
+                        className={buttonVariants({
+                          size: "sm",
+                        })}
+                      >
+                        Dashboard
+                      </Link>
+                      <LogoutLink
+                        className={buttonVariants({
+                          size: "sm",
+                          variant: "outline",
+                        })}
+                      >
+                        Logout
+                      </LogoutLink>
+                    </>
+                  ) : (
+                    <>
+                      <LoginLink
+                        className={buttonVariants({
+                          variant: "outline",
+                          size: "sm",
+                        })}
+                      >
+                        Login
+                      </LoginLink>
+                      {/* <Button
                   asChild
                   variant="outline"
                   size="sm"
@@ -106,8 +144,11 @@ export const HeroHeader = () => {
                   <Link href="#">
                     <span>Login</span>
                   </Link>
-                </Button>
-                <Button
+                </Button> */}
+                      <RegisterLink className={buttonVariants({ size: "sm" })}>
+                        Sign Up
+                      </RegisterLink>
+                      {/* <Button
                   asChild
                   size="sm"
                   className={cn(isScrolled && "lg:hidden")}
@@ -115,17 +156,19 @@ export const HeroHeader = () => {
                   <Link href="#">
                     <span>Sign Up</span>
                   </Link>
-                </Button>
-                <Button
+                </Button> */}
+                      {/* <Button
                   asChild
                   size="sm"
-                  className={cn(isScrolled ? "lg:inline-flex" : "hidden")}
                 >
                   <Link href="#">
                     <span>Get Started</span>
                   </Link>
-                </Button>
-              </div>
+                </Button> */}
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
