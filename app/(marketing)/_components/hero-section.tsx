@@ -19,7 +19,7 @@ const transitionVariants = {
             filter: 'blur(0px)',
             y: 0,
             transition: {
-                type: 'spring',
+                type: 'spring' as const,
                 bounce: 0.3,
                 duration: 1.5,
             },
@@ -87,7 +87,7 @@ export default function HeroSection() {
                                     <Link
                                         href="#link"
                                         className="hover:bg-background dark:hover:border-t-border bg-muted group mx-auto flex w-fit items-center gap-4 rounded-full border p-1 pl-4 shadow-md shadow-zinc-950/5 transition-colors duration-300 dark:border-t-white/5 dark:shadow-zinc-950">
-                                        <span className="text-foreground text-sm">Introducing Support for AI Models</span>
+                                        <span className="text-foreground text-sm">Introducing new AI features</span>
                                         <span className="dark:border-background block h-4 w-0.5 border-l bg-white dark:bg-zinc-700"></span>
 
                                         <div className="bg-background group-hover:bg-muted size-6 overflow-hidden rounded-full duration-500">
@@ -107,8 +107,8 @@ export default function HeroSection() {
                                     preset="fade-in-blur"
                                     speedSegment={0.3}
                                     as="h1"
-                                    className="mx-auto mt-8 max-w-4xl text-balance text-5xl max-md:font-semibold md:text-7xl lg:mt-16 xl:text-[5.25rem]">
-                                    Modern Solutions for Customer Engagement
+                                    className="mx-auto mt-8 max-w-4xl text-balance text-5xl max-md:font-semibold md:text-7xl lg:mt-16 xl:text-[4.5rem]">
+                                    The AI-ready home for team communication
                                 </TextEffect>
                                 <TextEffect
                                     per="line"
@@ -117,7 +117,7 @@ export default function HeroSection() {
                                     delay={0.5}
                                     as="p"
                                     className="mx-auto mt-8 max-w-2xl text-balance text-lg">
-                                    Highly customizable components for building modern websites and applications that look and feel the way you mean it.
+                                    Tailflow organizes your team’s conversations, tasks, and projects in one place. It’s the perfect platform for teams to collaborate and build together.
                                 </TextEffect>
 
                                 <AnimatedGroup
@@ -132,7 +132,7 @@ export default function HeroSection() {
                                         },
                                         ...transitionVariants,
                                     }}
-                                    className="mt-12 flex flex-col items-center justify-center gap-2 md:flex-row">
+                                    className="mt-12 flex flex-col items-center justify-center gap-4 md:flex-row">
                                     <div
                                         key={1}
                                         className="bg-foreground/10 rounded-[calc(var(--radius-xl)+0.125rem)] border p-0.5">
@@ -141,7 +141,7 @@ export default function HeroSection() {
                                             size="lg"
                                             className="rounded-xl px-5 text-base">
                                             <Link href="#link">
-                                                <span className="text-nowrap">Start Building</span>
+                                                <span className="text-nowrap">Get Started</span>
                                             </Link>
                                         </Button>
                                     </div>
@@ -149,7 +149,7 @@ export default function HeroSection() {
                                         key={2}
                                         asChild
                                         size="lg"
-                                        variant="ghost"
+                                        variant="outline"
                                         className="h-10.5 rounded-xl px-5">
                                         <Link href="#link">
                                             <span className="text-nowrap">Request a demo</span>
@@ -205,77 +205,77 @@ export default function HeroSection() {
                         </div>
                         <div className="group-hover:blur-xs mx-auto mt-12 grid max-w-2xl grid-cols-4 gap-x-12 gap-y-8 transition-all duration-500 group-hover:opacity-50 sm:gap-x-16 sm:gap-y-14">
                             <div className="flex">
-                                <img
+                                <Image
                                     className="mx-auto h-5 w-fit dark:invert"
                                     src="https://html.tailus.io/blocks/customers/nvidia.svg"
                                     alt="Nvidia Logo"
                                     height="20"
-                                    width="auto"
+                                    width="20"
                                 />
                             </div>
 
                             <div className="flex">
-                                <img
+                                <Image
                                     className="mx-auto h-4 w-fit dark:invert"
                                     src="https://html.tailus.io/blocks/customers/column.svg"
                                     alt="Column Logo"
                                     height="16"
-                                    width="auto"
+                                    width="20"
                                 />
                             </div>
                             <div className="flex">
-                                <img
+                                <Image
                                     className="mx-auto h-4 w-fit dark:invert"
                                     src="https://html.tailus.io/blocks/customers/github.svg"
                                     alt="GitHub Logo"
                                     height="16"
-                                    width="auto"
+                                    width="20"
                                 />
                             </div>
                             <div className="flex">
-                                <img
+                                <Image
                                     className="mx-auto h-5 w-fit dark:invert"
                                     src="https://html.tailus.io/blocks/customers/nike.svg"
                                     alt="Nike Logo"
                                     height="20"
-                                    width="auto"
+                                    width="20"
                                 />
                             </div>
                             <div className="flex">
-                                <img
+                                <Image
                                     className="mx-auto h-5 w-fit dark:invert"
                                     src="https://html.tailus.io/blocks/customers/lemonsqueezy.svg"
                                     alt="Lemon Squeezy Logo"
                                     height="20"
-                                    width="auto"
+                                    width="20"
                                 />
                             </div>
                             <div className="flex">
-                                <img
+                                <Image
                                     className="mx-auto h-4 w-fit dark:invert"
                                     src="https://html.tailus.io/blocks/customers/laravel.svg"
                                     alt="Laravel Logo"
                                     height="16"
-                                    width="auto"
+                                    width="20"
                                 />
                             </div>
                             <div className="flex">
-                                <img
+                                <Image
                                     className="mx-auto h-7 w-fit dark:invert"
                                     src="https://html.tailus.io/blocks/customers/lilly.svg"
                                     alt="Lilly Logo"
                                     height="28"
-                                    width="auto"
+                                    width="20"
                                 />
                             </div>
 
                             <div className="flex">
-                                <img
+                                <Image
                                     className="mx-auto h-6 w-fit dark:invert"
                                     src="https://html.tailus.io/blocks/customers/openai.svg"
                                     alt="OpenAI Logo"
                                     height="24"
-                                    width="auto"
+                                    width="20"
                                 />
                             </div>
                         </div>
