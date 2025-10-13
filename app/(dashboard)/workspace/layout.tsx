@@ -1,4 +1,5 @@
 import { CreateWorkspace } from "./_components/CreateWorkspace";
+import { UserNav } from "./_components/UserNav";
 import { WorkspaceList } from "./_components/WorkspaceList";
 
 export default function WorkspaceLayout({
@@ -14,7 +15,12 @@ export default function WorkspaceLayout({
         <div className="mt-4">
           <CreateWorkspace />
         </div>
+
+        <div className="mt-auto">
+          <UserNav />
+        </div>
       </div>
+      {children}
     </div>
   );
 }
