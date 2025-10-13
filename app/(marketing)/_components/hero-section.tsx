@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { TextEffect } from '@/components/ui/text-effect'
 import { AnimatedGroup } from '@/components/ui/animated-group'
 import { HeroHeader } from './header'
+import { HERO_APP_SCREENSHOT, HERO_APP_SCREENSHOT_META } from '@/public/assets'
 
 const transitionVariants = {
     item: {
@@ -175,8 +176,8 @@ export default function HeroSection() {
                                 <div className="inset-shadow-2xs ring-background dark:inset-shadow-white/20 bg-background relative mx-auto max-w-6xl overflow-hidden rounded-2xl border p-4 shadow-lg shadow-zinc-950/15 ring-1">
                                     <Image
                                         className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
-                                        src="/mail2.png"
-                                        alt="app screen"
+                                        src={HERO_APP_SCREENSHOT.HERO_SCREENSHOT}
+                                        alt={HERO_APP_SCREENSHOT_META.HERO_SCREENSHOT.alt}
                                         width="2700"
                                         height="1440"
                                     />
