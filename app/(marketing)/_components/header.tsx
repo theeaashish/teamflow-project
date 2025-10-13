@@ -109,7 +109,7 @@ export const HeroHeader = () => {
                   {user ? (
                     <>
                       <Link
-                        href="/dashboard"
+                        href="/workspace"
                         className={buttonVariants({
                           size: "sm",
                         })}
