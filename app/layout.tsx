@@ -1,3 +1,4 @@
+import '@/lib/orpc.server'; // prerendering for ssr 
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
