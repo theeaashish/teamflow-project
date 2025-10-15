@@ -4,6 +4,15 @@ import { WorkspaceList } from './_components/WorkspaceList';
 import { orpc } from '@/lib/orpc';
 import { getQueryClient, HydrateClient } from '@/lib/query/hydration';
 
+/**
+ * Workspace dashboard layout that preloads the workspace list and renders a fixed sidebar alongside the main content.
+ *
+ * Prefetches workspace list data into a QueryClient used to hydrate WorkspaceList and UserNav, then renders a left sidebar
+ * containing workspace navigation and controls and the provided `children` as the right-side content area.
+ *
+ * @param children - Content to render in the layout's main (right-side) area
+ * @returns A React element containing the workspace sidebar and the provided `children` as the main content
+ */
 export default async function WorkspaceLayout({
   children,
 }: {

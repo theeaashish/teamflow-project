@@ -49,6 +49,14 @@ const getWorkspaceColor = (id: string) => {
   return colorCombinations[colorIndex];
 };
 
+/**
+ * Renders a vertical list of workspace icons with per-workspace login links and tooltips.
+ *
+ * Each workspace displays a colored icon (color derived from its id), opens a LoginLink scoped to that workspace,
+ * and shows the workspace name in a tooltip. The currently active workspace is visually highlighted and marked with "(Current)" in the tooltip.
+ *
+ * @returns The JSX element that renders the workspace list.
+ */
 export function WorkspaceList() {
   const {
     data: { workspaces, currentWorkspace },

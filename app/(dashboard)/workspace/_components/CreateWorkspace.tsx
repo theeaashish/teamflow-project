@@ -32,6 +32,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { orpc } from '@/lib/orpc';
 import { toast } from 'sonner';
 
+/**
+ * Render a trigger button and modal dialog that let the user create a new workspace.
+ *
+ * The dialog contains a validated form for the workspace name. On successful creation it shows a success toast, invalidates the workspace list query, resets the form, and closes the dialog; on failure it shows an error toast.
+ *
+ * @returns A JSX element containing the create-workspace trigger and modal dialog.
+ */
 export function CreateWorkspace() {
   const [open, setOpen] = useState<boolean>(false);
   const queryClient = useQueryClient();

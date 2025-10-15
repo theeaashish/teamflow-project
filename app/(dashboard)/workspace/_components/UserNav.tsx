@@ -24,7 +24,15 @@ import { CreditCard, LogOut, User } from 'lucide-react';
 //   picture: "https://github.com/shadcn.png",
 //   given_name: "Aashish Joshi",
 //   given_email: "theeaashish@gmail.com",
-// };
+/**
+ * Renders a user avatar dropdown that shows the current user's avatar, name, and email,
+ * and provides links for Account, Billing, and Log Out.
+ *
+ * Displays the user's avatar (with fallback initials) as the trigger and a right-aligned
+ * dropdown containing a compact user summary and navigation actions.
+ *
+ * @returns A JSX element containing the avatar-triggered dropdown menu with account, billing, and logout actions.
+ */
 
 export function UserNav() {
   const {
