@@ -1,8 +1,8 @@
-import { CreateWorkspace } from "./_components/CreateWorkspace";
-import { UserNav } from "./_components/UserNav";
-import { WorkspaceList } from "./_components/WorkspaceList";
-import { orpc } from "@/lib/orpc";
-import { getQueryClient, HydrateClient } from "@/lib/query/hydration";
+import { CreateWorkspace } from './_components/CreateWorkspace';
+import { UserNav } from './_components/UserNav';
+import { WorkspaceList } from './_components/WorkspaceList';
+import { orpc } from '@/lib/orpc';
+import { getQueryClient, HydrateClient } from '@/lib/query/hydration';
 
 export default async function WorkspaceLayout({
   children,
@@ -25,7 +25,9 @@ export default async function WorkspaceLayout({
         </div>
 
         <div className="mt-auto">
-          <UserNav />
+          <HydrateClient client={queryClient}>
+            <UserNav />
+          </HydrateClient>
         </div>
       </div>
       {children}
