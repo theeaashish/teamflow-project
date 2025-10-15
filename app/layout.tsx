@@ -5,6 +5,7 @@ import './globals.css';
 import { ThemeProvider } from '@/lib/theme-provider';
 import { AuthProvider } from '@/lib/auth-provider';
 import { Providers } from '@/lib/query/providers';
+import { Toaster } from '@/components/ui/sonner';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -33,6 +34,7 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Providers>{children}</Providers>
+            <Toaster closeButton position='top-center'/>
           </ThemeProvider>
         </body>
       </html>
