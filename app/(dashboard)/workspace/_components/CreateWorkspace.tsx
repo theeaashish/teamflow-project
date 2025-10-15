@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -16,30 +16,56 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Plus } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { workspaceSchema } from "@/app/schemas/workspace";
+} from '@/components/ui/tooltip';
+import { Loader, Plus } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { workspaceSchema, WorkspaceSchemaType } from '@/app/schemas/workspace';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { orpc } from '@/lib/orpc';
+import { toast } from 'sonner';
 
 export function CreateWorkspace() {
   const [open, setOpen] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   const form = useForm({
     resolver: zodResolver(workspaceSchema),
     defaultValues: {
-      name: "",
+      name: '',
     },
   });
 
-  function onSubmit() {}
+  const createWorkspaceMutation = useMutation(
+    orpc.workspace.create.mutationOptions({
+      onSuccess: (newWorkspace) => {
+        toast.success(
+          `Workspace ${newWorkspace.workspaceName} created successfully!`
+        );
+
+        queryClient.invalidateQueries({
+          queryKey: orpc.workspace.list.queryKey(),
+        });
+
+        form.reset();
+        setOpen(false);
+      },
+      onError: () => {
+        toast.error('Failed to create workspace. Please try again.');
+      },
+    })
+  );
+
+  function onSubmit(values: WorkspaceSchemaType) {
+    createWorkspaceMutation.mutate(values);
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -82,7 +108,19 @@ export function CreateWorkspace() {
               )}
             />
 
-            <Button type="submit">Create Workspace</Button>
+            <Button disabled={createWorkspaceMutation.isPending} type="submit">
+              {createWorkspaceMutation.isPending ? (
+                <>
+                  Creating...
+                  <Loader className="animate-spin size-4" />
+                </>
+              ) : (
+                <>
+                  Create Workspace
+                  <Plus />
+                </>
+              )}
+            </Button>
           </form>
         </Form>
       </DialogContent>
