@@ -23,14 +23,13 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { Plus } from 'lucide-react';
+import { Loader, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { workspaceSchema, WorkspaceSchemaType } from '@/app/schemas/workspace';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { orpc } from '@/lib/orpc';
-import { onSuccess } from '@orpc/client';
 import { toast } from 'sonner';
 
 export function CreateWorkspace() {
@@ -109,7 +108,19 @@ export function CreateWorkspace() {
               )}
             />
 
-            <Button type="submit">Create Workspace</Button>
+            <Button disabled={createWorkspaceMutation.isPending} type="submit">
+              {createWorkspaceMutation.isPending ? (
+                <>
+                  Creating...
+                  <Loader className="animate-spin size-4" />
+                </>
+              ) : (
+                <>
+                  Create Workspace
+                  <Plus />
+                </>
+              )}
+            </Button>
           </form>
         </Form>
       </DialogContent>
