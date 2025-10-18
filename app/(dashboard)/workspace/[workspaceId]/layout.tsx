@@ -6,8 +6,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ChannelList } from './_components/ChannelList';
+import { WorkspaceMembersList } from './_components/WorkspaceMemberList';
 
 export default function ChannelListLayout({
   children,
@@ -43,13 +44,14 @@ export default function ChannelListLayout({
         {/* members list */}
         <div className="px-4 py-2 border-t border-border">
           <Collapsible defaultOpen>
-            <CollapsibleTrigger className="flex items-center w-full justify-between px-2 py-1 text-sm font-medium text-muted-foreground hover:text-accent-foreground">
+            <CollapsibleTrigger className="flex items-center w-full justify-between px-2 py-1 text-sm font-medium text-muted-foreground hover:text-accent-foreground [&[data-state='open']>svg]:rotate-180">
               Members
-              <ChevronDown className="size-4 transition-transform duration-200" />
+              <ChevronUp className="size-4 transition-transform duration-200" />
             </CollapsibleTrigger>
 
             <CollapsibleContent>
             {/* TODO */}
+            <WorkspaceMembersList />
             </CollapsibleContent>
           </Collapsible>
         </div>
