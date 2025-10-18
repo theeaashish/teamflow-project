@@ -1,6 +1,10 @@
 'use client';
 
-import { channelNameSchema, transformChannelName } from '@/app/schemas/channel';
+import {
+  channelNameSchema,
+  ChannelSchemaNameType,
+  transformChannelName,
+} from '@/app/schemas/channel';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -19,10 +23,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { orpc } from '@/lib/orpc';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus } from 'lucide-react';
+import { isDefinedError } from '@orpc/client';
+import { useMutation } from '@tanstack/react-query';
+import { Loader, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 export function CreateNewChannel() {
   const [open, setOpen] = useState<boolean>(false);
@@ -33,6 +41,30 @@ export function CreateNewChannel() {
       name: '',
     },
   });
+
+  const createChannelMutation = useMutation(
+    orpc.channel.create.mutationOptions({
+      onSuccess: (newChannel) => {
+        toast.success(`Channel ${newChannel.name} created successfully!`);
+
+        form.reset();
+        setOpen(false);
+      },
+
+      onError: (error) => {
+        if (isDefinedError(error)) {
+          toast.error(error.message);
+
+          return;
+        }
+        toast.error('Failed to create channel. Please try again.');
+      },
+    })
+  );
+
+  function onSubmit(values: ChannelSchemaNameType) {
+    createChannelMutation.mutate(values);
+  }
 
   const watchedName = form.watch('name');
   const transformedName = watchedName ? transformChannelName(watchedName) : '';
@@ -54,7 +86,7 @@ export function CreateNewChannel() {
         </DialogHeader>
 
         <Form {...form}>
-          <form className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="name"
@@ -77,7 +109,19 @@ export function CreateNewChannel() {
               )}
             />
 
-            <Button type="submit">Create new Channel</Button>
+            <Button disabled={createChannelMutation.isPending} type="submit">
+              {createChannelMutation.isPending ? (
+                <>
+                  Creating Channel...
+                  <Loader className="size-4 animate-spin" />
+                </>
+              ) : (
+                <>
+                  Create new Channel
+                  <Plus className="size-4" />
+                </>
+              )}
+            </Button>
           </form>
         </Form>
       </DialogContent>
