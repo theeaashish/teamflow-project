@@ -1,28 +1,16 @@
+'use client';
+
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { getAvatar } from '@/lib/get-avatar';
+import { orpc } from '@/lib/orpc';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 
-const members = [
-  {
-    id: 1,
-    name: 'John Doe',
-    imageUrl: 'https://avatar.vercel.sh/rauchg',
-    email: 'john.doe@example.com',
-  },
-  {
-    id: 2,
-    name: 'Jane Doe',
-    imageUrl: 'https://avatar.vercel.sh/rauchg',
-    email: 'jane.doe@example.com',
-  },
-  {
-    id: 3,
-    name: 'John Doe',
-    imageUrl: 'https://avatar.vercel.sh/rauchg',
-    email: 'john.doe@example.com',
-  },
-];
-
 export function WorkspaceMembersList() {
+  const {
+    data: { members },
+  } = useSuspenseQuery(orpc.channel.list.queryOptions());
+
   return (
     <div className="space-y-0.5 py-1">
       {members.map((member) => (
@@ -33,20 +21,20 @@ export function WorkspaceMembersList() {
           <div className="relative">
             <Avatar className="size-8 relative">
               <Image
-                src={member.imageUrl}
+                src={getAvatar(member.picture ?? null, member.email!)}
                 alt="user image"
                 className="object-cover"
                 fill
               />
 
               <AvatarFallback>
-                {member.name.charAt(0).toUpperCase()}
+                {member.full_name?.charAt(0).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </div>
 
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">{member.name}</p>
+            <p className="text-sm font-medium truncate">{member.full_name}</p>
             <p className="text-xs text-muted-foreground truncate">
               {member.email}
             </p>

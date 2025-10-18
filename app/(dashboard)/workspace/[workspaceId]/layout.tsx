@@ -9,18 +9,26 @@ import {
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ChannelList } from './_components/ChannelList';
 import { WorkspaceMembersList } from './_components/WorkspaceMemberList';
+import { getQueryClient, HydrateClient } from '@/lib/query/hydration';
+import { orpc } from '@/lib/orpc';
 
-export default function ChannelListLayout({
+export default async function ChannelListLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const queryClient = getQueryClient();
+
+  await queryClient.prefetchQuery(orpc.channel.list.queryOptions());
+
   return (
     <>
       <div className="flex h-full w-80 flex-col bg-secondary border-r border-border">
         {/* header */}
         <div className="flex items-center px-4 h-14 border-b border-border">
-          <WorkspaceHeader />
+          <HydrateClient client={queryClient}>
+            <WorkspaceHeader />
+          </HydrateClient>
         </div>
 
         <div className="px-4 py-2">
@@ -36,7 +44,9 @@ export default function ChannelListLayout({
             </CollapsibleTrigger>
 
             <CollapsibleContent>
-              <ChannelList />
+              <HydrateClient client={queryClient}>
+                <ChannelList />
+              </HydrateClient>
             </CollapsibleContent>
           </Collapsible>
         </div>
@@ -50,8 +60,10 @@ export default function ChannelListLayout({
             </CollapsibleTrigger>
 
             <CollapsibleContent>
-            {/* TODO */}
-            <WorkspaceMembersList />
+              {/* TODO */}
+              <HydrateClient client={queryClient}>
+                <WorkspaceMembersList />
+              </HydrateClient>
             </CollapsibleContent>
           </Collapsible>
         </div>

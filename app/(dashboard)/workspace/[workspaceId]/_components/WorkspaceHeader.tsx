@@ -1,3 +1,14 @@
+'use client';
+
+import { orpc } from '@/lib/orpc';
+import { useSuspenseQuery } from '@tanstack/react-query';
+
 export function WorkspaceHeader() {
-  return <h1 className="text-lg font-semibold">This is Just an Header</h1>;
+  const {
+    data: { currentWorkspace },
+  } = useSuspenseQuery(orpc.channel.list.queryOptions());
+
+  return (
+    <h1 className="text-lg font-semibold"> {currentWorkspace.orgName} </h1>
+  );
 }
