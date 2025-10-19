@@ -68,6 +68,8 @@ export default async function ChannelListLayout({
           </Collapsible>
         </div>
       </div>
+
+      {children}
     </>
   );
 }
