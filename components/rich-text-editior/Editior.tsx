@@ -3,10 +3,32 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import { editiorExtension } from './extensions';
 import { MenuBar } from './MenuBar';
+import { ReactNode } from 'react';
 
-export function RichTextEditior() {
+interface iAppProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  field: any;
+  sendButton: ReactNode;
+  footerLeft?: ReactNode;
+}
+
+export function RichTextEditior({ field, sendButton, footerLeft }: iAppProps) {
   const editior = useEditor({
     immediatelyRender: false,
+    content: (() => {
+      if (!field?.value) return '';
+
+      try {
+        return JSON.parse(field.value);
+      } catch {
+        return '';
+      }
+    })(),
+    onUpdate: ({ editor }) => {
+      if (field?.onChange) {
+        field.onChange(JSON.stringify(editor.getJSON()));
+      }
+    },
     extensions: editiorExtension,
     editorProps: {
       attributes: {
@@ -23,6 +45,11 @@ export function RichTextEditior() {
         editor={editior}
         className="max-h-[200px] overflow-y-auto"
       />
+
+      <div className="flex items-center justify-between px-3 py-2 gap-2 border-t border-input bg-card">
+        <div className="min-h-8 flex items-center">{footerLeft}</div>
+        <div className="shrink-0">{sendButton}</div>
+      </div>
     </div>
   );
 }
