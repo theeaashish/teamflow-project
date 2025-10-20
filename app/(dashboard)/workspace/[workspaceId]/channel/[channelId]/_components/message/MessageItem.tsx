@@ -1,3 +1,4 @@
+import { SafeContent } from '@/components/rich-text-editior/SafeContent';
 import { Message } from '@/lib/generated/prisma';
 import { getAvatar } from '@/lib/get-avatar';
 import Image from 'next/image';
@@ -19,7 +20,9 @@ export function MessageItem({ message }: iAppProps) {
 
       <div className="flex-1 space-y-1 min-w-0">
         <div className="flex items-center gap-x-2">
-          <p className="font-medium text-sm leading-none">{message.authorName}</p>
+          <p className="font-medium text-sm leading-none">
+            {message.authorName}
+          </p>
           <p className="text-xs text-muted-foreground leading-none">
             {/* date */}
             {new Intl.DateTimeFormat('en-IN', {
@@ -36,7 +39,7 @@ export function MessageItem({ message }: iAppProps) {
           </p>
         </div>
 
-        <p className="text-sm break-words max-w-none">{message.content}</p>
+        <SafeContent content={JSON.parse(message.content)} />
       </div>
     </div>
   );
