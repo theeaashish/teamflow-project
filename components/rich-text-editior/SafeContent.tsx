@@ -5,11 +5,12 @@ import parse from 'html-react-parser';
 
 interface SafeContentProps {
   content: JSONContent;
+  className?: string;
 }
 
-export function SafeContent({ content }: SafeContentProps) {
+export function SafeContent({ content, className }: SafeContentProps) {
   const html = convertJsonToHtml(content);
   const clean = DOMPurify.sanitize(html);
 
-  return <div>{parse(clean)}</div>;
+  return <div className={className}>{parse(clean)}</div>;
 }

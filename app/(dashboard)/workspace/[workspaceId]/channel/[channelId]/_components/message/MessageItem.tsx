@@ -39,7 +39,10 @@ export function MessageItem({ message }: iAppProps) {
           </p>
         </div>
 
-        <SafeContent content={JSON.parse(message.content)} />
+        <SafeContent
+          className="text-sm break-words prose dark:prose-invert max-w-none marker:text-primary"
+          content={JSON.parse(message.content)}
+        />
       </div>
     </div>
   );
