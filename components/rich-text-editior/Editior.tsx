@@ -13,7 +13,7 @@ interface iAppProps {
 }
 
 export function RichTextEditior({ field, sendButton, footerLeft }: iAppProps) {
-  const editior = useEditor({
+  const editor = useEditor({
     immediatelyRender: false,
     content: (() => {
       if (!field?.value) return '';
@@ -40,9 +40,9 @@ export function RichTextEditior({ field, sendButton, footerLeft }: iAppProps) {
 
   return (
     <div className="relative w-full border border-input rounded-lg overflow-hidden dark:bg-input/30 flex flex-col">
-      <MenuBar editor={editior} />
+      <MenuBar editor={editor} />
       <EditorContent
-        editor={editior}
+        editor={editor}
         className="max-h-[200px] overflow-y-auto"
       />
 
