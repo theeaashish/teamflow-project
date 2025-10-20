@@ -22,7 +22,7 @@ async function existingMiddleware(req: NextRequest) {
   const orgCode = await getClaim('org_code');
 
   const url = req.nextUrl;
-  
+
   if (
     url.pathname.startsWith('/workspace') &&
     !url.pathname.includes(orgCode?.value || '')
