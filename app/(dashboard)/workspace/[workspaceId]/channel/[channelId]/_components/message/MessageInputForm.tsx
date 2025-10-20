@@ -58,6 +58,7 @@ export function MessageInputForm({ channelId }: MessageInputFormProps) {
                 <MessageComposer
                   onChange={field.onChange}
                   value={field.value}
+                  onSubmit={() => onSubmit(form.getValues())}
                 />
               </FormControl>
               <FormMessage />
