@@ -36,10 +36,10 @@ export function MessageInputForm({ channelId }: MessageInputFormProps) {
   const createMessageMutation = useMutation(
     orpc.message.create.mutationOptions({
       onSuccess: () => {
-        form.reset(); // reset after successful msg creation
         queryClient.invalidateQueries({
           queryKey: orpc.message.list.key(),
         });
+        form.reset(); // reset after successful msg creation
         return toast.success('Message created successfully');
       },
       onError: () => {
