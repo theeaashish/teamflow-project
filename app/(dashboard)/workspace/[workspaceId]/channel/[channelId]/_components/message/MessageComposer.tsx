@@ -1,5 +1,7 @@
 import { RichTextEditior } from '@/components/rich-text-editior/Editior';
+import { ImageUploadModel } from '@/components/rich-text-editior/ImageUploadModel';
 import { Button } from '@/components/ui/button';
+import { UseAttachmentUploadType } from '@/hooks/use-attachment-upload';
 import { ImageIcon, Send } from 'lucide-react';
 
 interface MessageComposerProps {
@@ -7,6 +9,7 @@ interface MessageComposerProps {
   onChange: (next: string) => void;
   onSubmit: () => void;
   isSubmitting?: boolean;
+  upload: UseAttachmentUploadType;
 }
 
 export function MessageComposer({
@@ -14,6 +17,7 @@ export function MessageComposer({
   value,
   onSubmit,
   isSubmitting,
+  upload,
 }: MessageComposerProps) {
   return (
     <>
@@ -31,12 +35,18 @@ export function MessageComposer({
           </Button>
         }
         footerLeft={
-          <Button type="button" size={'sm'} variant={'outline'}>
+          <Button
+            onClick={() => upload.setIsOpen(true)}
+            type="button"
+            size={'sm'}
+            variant={'outline'}
+          >
             <ImageIcon className="size-4 mr-1" />
             Attach
           </Button>
         }
       />
+      <ImageUploadModel open={upload.isOpen} onOpenChange={upload.setIsOpen} />
     </>
   );
 }

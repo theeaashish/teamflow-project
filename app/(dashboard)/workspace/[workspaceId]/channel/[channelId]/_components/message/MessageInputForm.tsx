@@ -18,6 +18,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { orpc } from '@/lib/orpc';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { useAttachmentUpload } from '@/hooks/use-attachment-upload';
 
 interface MessageInputFormProps {
   channelId: string;
@@ -26,6 +27,7 @@ interface MessageInputFormProps {
 export function MessageInputForm({ channelId }: MessageInputFormProps) {
   const queryClient = useQueryClient();
   const [editorKey, setEditorKey] = useState<number>(0);
+  const upload = useAttachmentUpload();
 
   const form = useForm({
     resolver: zodResolver(createMessageSchema),
@@ -71,6 +73,7 @@ export function MessageInputForm({ channelId }: MessageInputFormProps) {
                   value={field.value}
                   onSubmit={() => onSubmit(form.getValues())}
                   isSubmitting={createMessageMutation.isPending}
+                  upload={upload}
                 />
               </FormControl>
               <FormMessage />
