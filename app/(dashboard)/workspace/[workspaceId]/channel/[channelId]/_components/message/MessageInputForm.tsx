@@ -17,6 +17,7 @@ import { MessageComposer } from './MessageComposer';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { orpc } from '@/lib/orpc';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 interface MessageInputFormProps {
   channelId: string;
@@ -24,6 +25,7 @@ interface MessageInputFormProps {
 
 export function MessageInputForm({ channelId }: MessageInputFormProps) {
   const queryClient = useQueryClient();
+  const [editorKey, setEditorKey] = useState<number>(0);
 
   const form = useForm({
     resolver: zodResolver(createMessageSchema),
@@ -39,7 +41,10 @@ export function MessageInputForm({ channelId }: MessageInputFormProps) {
         queryClient.invalidateQueries({
           queryKey: orpc.message.list.key(),
         });
-        form.reset(); // reset after successful msg creation
+
+        form.reset({ channelId, content: '' }); // reset after successful msg creation
+        setEditorKey((k) => k + 1);
+
         return toast.success('Message created successfully');
       },
       onError: () => {
@@ -61,6 +66,7 @@ export function MessageInputForm({ channelId }: MessageInputFormProps) {
             <FormItem>
               <FormControl>
                 <MessageComposer
+                  key={editorKey}
                   onChange={field.onChange}
                   value={field.value}
                   onSubmit={() => onSubmit(form.getValues())}
