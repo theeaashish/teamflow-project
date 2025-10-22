@@ -45,6 +45,8 @@ export function MessageInputForm({ channelId }: MessageInputFormProps) {
         });
 
         form.reset({ channelId, content: '' }); // reset after successful msg creation
+        upload.clear();
+        
         setEditorKey((k) => k + 1);
 
         return toast.success('Message created successfully');
@@ -56,7 +58,10 @@ export function MessageInputForm({ channelId }: MessageInputFormProps) {
   );
 
   function onSubmit(data: CreateMessageSchemaType) {
-    createMessageMutation.mutate(data);
+    createMessageMutation.mutate({
+      ...data,
+      imageUrl: upload.stagedUrl ?? undefined,
+    });
   }
   return (
     <Form {...form}>

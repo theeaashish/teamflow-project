@@ -3,6 +3,7 @@ import { ImageUploadModel } from '@/components/rich-text-editior/ImageUploadMode
 import { Button } from '@/components/ui/button';
 import { UseAttachmentUploadType } from '@/hooks/use-attachment-upload';
 import { ImageIcon, Send } from 'lucide-react';
+import { AttachmentChip } from './AttachmentChip';
 
 interface MessageComposerProps {
   value: string;
@@ -35,18 +36,26 @@ export function MessageComposer({
           </Button>
         }
         footerLeft={
-          <Button
-            onClick={() => upload.setIsOpen(true)}
-            type="button"
-            size={'sm'}
-            variant={'outline'}
-          >
-            <ImageIcon className="size-4 mr-1" />
-            Attach
-          </Button>
+          upload.stagedUrl ? (
+            <AttachmentChip onRemove={upload.clear} url={upload.stagedUrl} />
+          ) : (
+            <Button
+              onClick={() => upload.setIsOpen(true)}
+              type="button"
+              size={'sm'}
+              variant={'outline'}
+            >
+              <ImageIcon className="size-4 mr-1" />
+              Attach
+            </Button>
+          )
         }
       />
-      <ImageUploadModel open={upload.isOpen} onOpenChange={upload.setIsOpen} />
+      <ImageUploadModel
+        onUploaded={(url) => upload.onUploaded(url)}
+        open={upload.isOpen}
+        onOpenChange={upload.setIsOpen}
+      />
     </>
   );
 }
