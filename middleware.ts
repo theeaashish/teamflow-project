@@ -44,7 +44,7 @@ async function existingMiddleware(req: NextRequest) {
 export default createMiddleware(
   aj,
   withAuth(existingMiddleware, {
-    publicPaths: ['/'],
+    publicPaths: ['/', '/api/uploadthing'],
   }) as NextMiddleware
 );
 
