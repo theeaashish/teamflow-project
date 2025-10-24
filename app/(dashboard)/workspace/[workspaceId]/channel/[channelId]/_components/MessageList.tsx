@@ -6,6 +6,7 @@ import { orpc } from '@/lib/orpc';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { EmptyState } from '@/components/general/EmptyState';
 
 export function MessageList() {
   const { channelId } = useParams<{ channelId: string }>();
@@ -49,17 +50,67 @@ export function MessageList() {
     refetchOnWindowFocus: false,
   });
 
+  // scroll to the bottom when msg first load
   useEffect(() => {
     if (!hasInitialScrolled && data?.pages.length) {
       const el = scrollRef.current;
 
       if (el) {
-        el.scrollTop = el.scrollHeight;
+        bottomRef.current?.scrollIntoView({ block: 'end' });
         setHasInitialScrolled(true);
         setIsAtBottom(true);
       }
     }
   }, [hasInitialScrolled, data?.pages.length]);
+
+  // keep view pinned to bottom on late content growth
+  useEffect(() => {
+    const el = scrollRef.current;
+
+    if (!el) return;
+
+    const scrollToBottomIfNeeded = () => {
+      if (isAtBottom || !hasInitialScrolled) {
+        requestAnimationFrame(() => {
+          bottomRef.current?.scrollIntoView({ block: 'end' });
+        });
+      }
+    };
+
+    const onImageLoad = (e: Event) => {
+      if (e.target instanceof HTMLImageElement) {
+        scrollToBottomIfNeeded();
+      }
+    };
+
+    el.addEventListener('load', onImageLoad, true);
+
+    // resize observer watches for size changes in the container
+    const resizeObserver = new ResizeObserver(() => {
+      scrollToBottomIfNeeded();
+    });
+
+    resizeObserver.observe(el);
+
+    // mutationobserver watches the dom changes
+    const mutationObserver = new MutationObserver(() => {
+      scrollToBottomIfNeeded();
+    });
+
+    mutationObserver.observe(el, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      characterData: true,
+    });
+
+    return () => {
+      resizeObserver.disconnect();
+
+      el.removeEventListener('load', onImageLoad, true);
+      mutationObserver.disconnect();
+    };
+  }, [isAtBottom, hasInitialScrolled]);
 
   const isNearBottom = (el: HTMLDivElement) =>
     el.scrollHeight - el.scrollTop - el.clientHeight <= 80;
@@ -87,6 +138,8 @@ export function MessageList() {
   const items = useMemo(() => {
     return data?.pages.flatMap((page) => page.items) ?? [];
   }, [data]);
+
+  const isEmpty = !isLoading && !error && items.length === 0;
 
   useEffect(() => {
     if (!items.length) return;
@@ -116,7 +169,7 @@ export function MessageList() {
 
     if (!el) return;
 
-    el.scrollTop = el.scrollHeight;
+    bottomRef.current?.scrollIntoView({ block: 'end' });
 
     setNewMessages(false);
     setIsAtBottom(true);
@@ -129,9 +182,13 @@ export function MessageList() {
         ref={scrollRef}
         onScroll={handleScroll}
       >
-        {items?.map((message) => (
-          <MessageItem key={message.id} message={message} />
-        ))}
+        {isEmpty ? (
+          <EmptyState buttonText='Send a message' href='#' title='No messages yet' description='Send a message to start the conversation' />
+        ) : (
+          items?.map((message) => (
+            <MessageItem key={message.id} message={message} />
+          ))
+        )}
 
         <div ref={bottomRef}></div>
       </div>
