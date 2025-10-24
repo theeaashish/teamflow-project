@@ -7,6 +7,7 @@ import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { EmptyState } from '@/components/general/EmptyState';
+import { ChevronDown, Loader } from 'lucide-react';
 
 export function MessageList() {
   const { channelId } = useParams<{ channelId: string }>();
@@ -183,7 +184,12 @@ export function MessageList() {
         onScroll={handleScroll}
       >
         {isEmpty ? (
-          <EmptyState buttonText='Send a message' href='#' title='No messages yet' description='Send a message to start the conversation' />
+          <EmptyState
+            buttonText="Send a message"
+            href="#"
+            title="No messages yet"
+            description="Send a message to start the conversation"
+          />
         ) : (
           items?.map((message) => (
             <MessageItem key={message.id} message={message} />
@@ -193,15 +199,25 @@ export function MessageList() {
         <div ref={bottomRef}></div>
       </div>
 
-      {newMessages && !isAtBottom ? (
+      {isFetchingNextPage && (
+        <div className="pointer-events-none absolute top-0 left-0 right-0 z-20 flex items-center justify-center py-2">
+          <div className="flex items-center gap-2 rounded-md bg-gradient-to-b from-white/80 to-transparent dark:from-neutral-900/80 backdrop-blur-sm px-3 py-1 ">
+            <Loader className="size-4 animate-spin text-muted-foreground" />
+            <span>Loading Messages...</span>
+          </div>
+        </div>
+      )}
+
+      {!isAtBottom && (
         <Button
           type="button"
-          className="absolute bottom-4 right-8 rounded-full"
           onClick={scrollToBottom}
+          size={'icon'}
+          className="absolute rounded-full bottom-4 right-5 z-20"
         >
-          New Messages
+          <ChevronDown className="size-4" />
         </Button>
-      ) : null}
+      )}
     </div>
   );
 }
